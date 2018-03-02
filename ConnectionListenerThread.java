@@ -28,9 +28,14 @@ public class ConnectionListenerThread implements Runnable
               //System.out.println("New message received");
               // continue listening for more connections
               // disconnect if all other connections are terminated
+              mThread.join();
+            } catch (InterruptedException ie)
+            {
+              System.out.println("Failed to join thread.");
+              System.exit(-1);
             } catch (IOException e) {
-                System.out.println("Failed to accept connection.");
-                System.exit(-1);
+              System.out.println("Failed to accept connection.");
+              System.exit(-1);
             }
         }
     }

@@ -127,6 +127,8 @@ import java.net.*;
      else if (input.equals("connect"))
      {
        this.connect();
+       // this user is now connected
+       this.connected = true;
      }
      else
      {
@@ -140,18 +142,17 @@ import java.net.*;
    {
      // initialize address list with self and known user
      //System.out.println(this.ownName + this.ownIP);
-     P2PChat.addresses.put(this.ownName, new Address(this.ownName, this.ownIP, this.ownPort));
+     Address ownAddress = new Address(this.ownName, this.ownIP, this.ownPort);
+     P2PChat.addresses.put(this.ownName, ownAddress);
      //System.out.println(this.friendName + this.friendIP);
-     P2PChat.addresses.put(this.friendName, new Address(this.friendName, this.friendIP, this.friendPort));
+     //P2PChat.addresses.put(this.friendName, new Address(this.friendName, this.friendIP, this.friendPort));
      try
      {
        // create a socket with known user
        Socket tempSock = new Socket(this.friendIP, this.friendPort);
        // send addresses to known user
        ObjectOutputStream addressTunnel = new ObjectOutputStream(tempSock.getOutputStream());
-       addressTunnel.writeObject(addresses);
-       // this user is now connected
-       this.connected = true;
+       addressTunnel.writeObject(ownAddress);
        // close the writer
        addressTunnel.flush();
        addressTunnel.close();
@@ -181,9 +182,10 @@ import java.net.*;
            int tempPort = P2PChat.addresses.get(key).port;
            Socket tempSock = new Socket(tempIP, tempPort);
            Address ownAddress = new Address(this.ownName, this.ownIP, this.ownPort);
+           Disconnect dcCall = new Disconnect(ownAddress);
            // send address through socket
            ObjectOutputStream disconnectTunnel = new ObjectOutputStream(tempSock.getOutputStream());
-           disconnectTunnel.writeObject(ownAddress);
+           disconnectTunnel.writeObject(dcCall);
            // user is now disconnected
            this.connected = false;
            disconnectTunnel.flush();

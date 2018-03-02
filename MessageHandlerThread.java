@@ -73,7 +73,7 @@ import java.util.Set;
            Address newAddress = newAddresses.get(key);
            P2PChat.addresses.putIfAbsent(key, newAddress);
          }
-         System.out.println("A user has connected.");
+         //System.out.println("A user has connected.");
        }
        else if (raw.getClass() == Disconnect.class) // disconnect address
        {
@@ -81,7 +81,7 @@ import java.util.Set;
          Disconnect dc = (Disconnect)raw;
          Address removed = (Address)dc.disconnector;
          P2PChat.addresses.remove(removed.userName);
-         System.out.println("A user has disconnected.");
+         //System.out.println("A user has disconnected.");
        }
      }
      catch (ClassNotFoundException c)

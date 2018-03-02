@@ -34,7 +34,7 @@ public class ConnectionListenerThread implements Runnable
               System.out.println("Failed to join thread.");
               System.exit(-1);
             } catch (IOException e) {
-              System.out.println("Failed to accept connection.");
+              System.out.println("Failed to accept connection or server was closed.");
               System.exit(-1);
             }
         }
